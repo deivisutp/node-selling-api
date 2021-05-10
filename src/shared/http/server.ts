@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 import express, { NextFunction, Request, Response } from 'express';
+import 'express-async-errors';
+import { errors } from 'celebrate';
 import cors from 'cors';
 import routes from './routes';
 import AppError from '@shared/errors/AppError';
@@ -12,6 +14,8 @@ app.use(express.json());
 
 //Routes
 app.use(routes);
+
+app.use(errors());
 
 //Error middleware
 app.use((error: Error, _req: Request, res: Response, next: NextFunction) => {
