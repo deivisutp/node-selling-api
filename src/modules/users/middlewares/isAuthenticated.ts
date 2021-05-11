@@ -3,6 +3,12 @@ import AppError from '@shared/errors/AppError';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
+interface ITokenPayload {
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
 export default function isAuthenticated(
   req: Request,
   res: Response,
@@ -20,8 +26,14 @@ export default function isAuthenticated(
 
   if (!/^Bearer$/i.test(scheme)) throw new AppError('Token malformatted');
 
-  verify(token, authConfig.jwt.secret, err => {
+  verify(token, authConfig.jwt.secret, (err, decoded) => {
     if (err) throw new AppError('Token invalid');
+
+    const { sub } = decoded as ITokenPayload;
+
+    req.user = {
+      id: sub,
+    };
 
     return next();
   });
