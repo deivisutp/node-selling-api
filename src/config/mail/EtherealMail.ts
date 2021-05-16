@@ -11,7 +11,7 @@ interface ITemplateVariable {
 }
 
 interface IParseMailTemplate {
-  template: string;
+  file: string;
   variables: ITemplateVariable;
 }
 
@@ -55,5 +55,7 @@ export default class EtherealMail {
       subject,
       html: await mailTemplate.parse(templateData),
     });
+
+    console.log(nodemailer.getTestMessageUrl(message));
   }
 }
