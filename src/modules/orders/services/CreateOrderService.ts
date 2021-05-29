@@ -1,9 +1,10 @@
-import { CustomerRepository } from '@modules/customers/typeorm/repositories/CustomerRepository';
-import { ProductRepository } from '@modules/products/typeorm/repositories/ProductRepository';
+import { injectable, inject } from 'tsyringe';
+import { ProductRepository } from '@modules/products/infra/typeorm/repositories/ProductRepository';
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import Order from '../typeorm/entities/Order';
-import { OrderRepository } from '../typeorm/repositories/OrderRepository';
+import Order from '../infra/typeorm/entities/Order';
+import { OrderRepository } from '../infra/typeorm/repositories/OrderRepository';
+import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
 
 interface IProduct {
   id: string;
@@ -15,13 +16,18 @@ interface IRequest {
   products: IProduct[];
 }
 
+@injectable()
 class CreateOrderService {
+  constructor(
+    @inject('CustomerRepository')
+    private customersRepository: ICustomersRepository,
+  ) {}
+
   public async execute({ customer_id, products }: IRequest): Promise<Order> {
     const orderRepository = getCustomRepository(OrderRepository);
-    const customerRepository = getCustomRepository(CustomerRepository);
     const productsRepository = getCustomRepository(ProductRepository);
 
-    const customerExists = await customerRepository.findById(customer_id);
+    const customerExists = await this.customersRepository.findById(customer_id);
 
     if (!customerExists) throw new AppError('Customer not found.');
 

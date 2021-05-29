@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts",
+        "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
         "lint": "eslint . --ext .ts",
         "lint-fix": "eslint . --ext .ts --fix",
         "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
@@ -51,6 +51,7 @@
         "rate-limiter-flexible": "^2.2.2",
         "redis": "^3.1.2",
         "reflect-metadata": "^0.1.13",
+        "tsyringe": "^4.5.0",
         "typeorm": "^0.2.32",
         "typeorm-pagination": "^2.0.1"
     }
