@@ -1,5 +1,9 @@
 # node-selling-api
 
+Cusotomer version
 API for customers
 
-#STEP 2
+#Please follow the manual steps
+
+#Step-1:
+#Step-2:
