@@ -7,11 +7,17 @@ import UpdateProductService from '../../../services/UpdateProductService';
 
 export default class ProductsController {
   public async index(req: Request, res: Response): Promise<Response> {
+    const { name } = req.query;
+
     const listProducts = new ListProductService();
 
     const products = await listProducts.execute();
 
-    return res.json(products);
+    const result = name
+      ? products.filter(product => product.name.includes(String(name)))
+      : products;
+
+    return res.json(result);
   }
 
   public async show(req: Request, res: Response): Promise<Response> {
